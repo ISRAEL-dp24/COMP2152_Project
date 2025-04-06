@@ -2,7 +2,7 @@
 import random
 
 # Put all the functions into another file and import them
-import functions
+import COMP2152_Project.functions as functions
 
 # Game Flow
 # Define two Dice
