@@ -1,4 +1,4 @@
-import functions
+import function
 import random
 
 # Game Flow
@@ -159,14 +159,14 @@ if not input_invalid:
         if not (attack_roll % 2 == 0):
             print("    |", end="    ")
             input("You strike (Press enter)")
-            m_health_points = functions_lab06.hero_attacks(combat_strength, m_health_points)
+            m_health_points = function.hero_attacks(combat_strength, m_health_points)
             if m_health_points == 0:
                 num_stars = 3
                 # Loot drop after killing monster
                 print("    ------------------------------------------------------------------")
                 print("    |    The monster is defeated!")
                 print("    |    Loot dropped!")
-                belt = functions_lab06.collect_loot("Normal", belt)
+                belt = function.collect_loot("Normal", belt)
                 print("    |    Your loot: ", belt)
                 # Check if a health potion was dropped
                 if "Health Potion" in belt:
@@ -180,7 +180,7 @@ if not input_invalid:
                 print("    |", end="    ")
                 print("------------------------------------------------------------------")
                 input("    |    The monster strikes (Press enter)!!!")
-                health_points = functions_lab06.monster_attacks(m_combat_strength, health_points)
+                health_points = function.monster_attacks(m_combat_strength, health_points)
                 if health_points == 0:
                     num_stars = 1
                 else:
@@ -188,21 +188,21 @@ if not input_invalid:
         else:
             print("    |", end="    ")
             input("The Monster strikes (Press enter)")
-            health_points = functions_lab06.monster_attacks(m_combat_strength, health_points)
+            health_points = function.monster_attacks(m_combat_strength, health_points)
             if health_points == 0:
                 num_stars = 1
             else:
                 print("    |", end="    ")
                 print("------------------------------------------------------------------")
                 input("The hero strikes!! (Press enter)")
-                m_health_points = functions_lab06.hero_attacks(combat_strength, m_health_points)
+                m_health_points = function.hero_attacks(combat_strength, m_health_points)
                 if m_health_points == 0:
                     num_stars = 3
                     # Loot drop after killing monster
                     print("    ------------------------------------------------------------------")
                     print("    |    The monster is defeated!")
                     print("    |    Loot dropped!")
-                    belt = functions_lab06.collect_loot("Normal", belt)
+                    belt = function.collect_loot("Normal", belt)
                     print("    |    Your loot: ", belt)
                     # Check if a health potion was dropped
                     if "Health Potion" in belt:
@@ -233,19 +233,19 @@ if not input_invalid:
             if not (attack_roll % 2 == 0):
                 print("    |", end="    ")
                 input("You strike the boss (Press enter)")
-                boss_health_points = functions_lab06.hero_attacks(combat_strength, boss_health_points)
+                boss_health_points = function.hero_attacks(combat_strength, boss_health_points)
                 if boss_health_points == 0:
                     num_stars = 5  # High reward for defeating the boss
                     print("    ------------------------------------------------------------------")
                     print("    |    The Boss is defeated!")
                     print("    |    Loot dropped!")
-                    belt = functions_lab06.collect_loot("Boss", belt)  # Boss loot drop
+                    belt = function.collect_loot("Boss", belt)  # Boss loot drop
                     print("    |    Your loot: ", belt)
                 else:
                     print("    |", end="    ")
                     print("------------------------------------------------------------------")
                     input("    |    The boss strikes back (Press enter)!!!")
-                    health_points = functions_lab06.monster_attacks(boss_combat_strength, health_points)
+                    health_points = function.monster_attacks(boss_combat_strength, health_points)
                     if health_points == 0:
                         num_stars = 2  # Lower reward for dying to the boss
                     else:
@@ -255,20 +255,20 @@ if not input_invalid:
             else:
                 print("    |", end="    ")
                 input("The boss strikes first (Press enter)")
-                health_points = functions_lab06.monster_attacks(boss_combat_strength, health_points)
+                health_points = function.monster_attacks(boss_combat_strength, health_points)
                 if health_points == 0:
                     num_stars = 1
                 else:
                     print("    |", end="    ")
                     print("------------------------------------------------------------------")
                     input("You strike the boss! (Press enter)")
-                    boss_health_points = functions_lab06.hero_attacks(combat_strength, boss_health_points)
+                    boss_health_points = function.hero_attacks(combat_strength, boss_health_points)
                     if boss_health_points == 0:
                         num_stars = 5
                         print("    ------------------------------------------------------------------")
                         print("    |    The Boss is defeated!")
                         print("    |    Loot dropped!")
-                        belt = functions_lab06.collect_loot("Boss", belt)  # Boss loot drop
+                        belt = function.collect_loot("Boss", belt)  # Boss loot drop
                         print("    |    Your loot: ", belt)
 
     else:
