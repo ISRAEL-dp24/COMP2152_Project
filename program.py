@@ -1,4 +1,4 @@
-import functions_lab06
+import functions
 import random
 
 # Game Flow
