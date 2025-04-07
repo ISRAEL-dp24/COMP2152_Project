@@ -1,6 +1,7 @@
 # Import the random library to use for the dice later
 import random
 
+
 # Will the line below print when you import function.py into main.py?
 # print("Inside function.py")
 
@@ -10,7 +11,7 @@ def use_loot(belt, health_points):
     good_loot_options = ["Health Potion", "Leather Boots"]
     bad_loot_options = ["Poison Potion"]
 
-    print("    |    !!You see a monster in the distance! So you quickly use your first item:")
+    print("    |    !!You see an enemy in the distance! So you quickly use your first item:")
     first_item = belt.pop(0)
     if first_item in good_loot_options:
         health_points = min(20, (health_points + 2))
@@ -75,12 +76,12 @@ def hero_attacks(combat_strength, m_health_points):
     if combat_strength >= m_health_points:
         # Player was strong enough to kill monster in one blow
         m_health_points = 0
-        print("    |    You have killed the monster")
+        print("    |    You have killed the enemy")
     else:
         # Player only damaged the monster
         m_health_points -= combat_strength
 
-        print("    |    You have reduced the monster's health to: " + str(m_health_points))
+        print("    |    You have reduced the opponent's health to: " + str(m_health_points))
     return m_health_points
 
 
@@ -103,7 +104,7 @@ def monster_attacks(m_combat_strength, health_points):
                           *(*  *      
              """
     print(ascii_image2)
-    print("    |    Monster's Claw (" + str(m_combat_strength) + ") ---> Player (" + str(health_points) + ")")
+    print("    |    Enemy's attack (" + str(m_combat_strength) + ") ---> Player (" + str(health_points) + ")")
     if m_combat_strength >= health_points:
         # Monster was strong enough to kill player in one blow
         health_points = 0
@@ -111,7 +112,7 @@ def monster_attacks(m_combat_strength, health_points):
     else:
         # Monster only damaged the player
         health_points -= m_combat_strength
-        print("    |    The monster has reduced Player's health to: " + str(health_points))
+        print("    |    The opponent has reduced Player's health to: " + str(health_points))
     return health_points
 
 # Lab 5: Question 7
@@ -141,9 +142,9 @@ def inception_dream(num_dream_lvls):
 def save_game(winner, hero_name="", num_stars=0):
     with open("save.txt", "a") as file:
         if winner == "Hero":
-            file.write(f"Hero {hero_name} has killed the monster and gained {num_stars} stars.\n")
+            file.write(f"Hero {hero_name} has killed the opponent and gained {num_stars} stars.\n")
         elif winner == "Monster":
-            file.write(f"Monster killed the {hero_name}.\n")
+            file.write(f"Enemy killed the {hero_name}.\n")
         file.close()    
 # Lab 06 - Question 5a
 def load_game():
@@ -166,10 +167,10 @@ def adjust_combat_strength(combat_strength, m_combat_strength):
         if "Hero" in last_game and "gained" in last_game:
             num_stars = int(last_game.split()[-2])
             if num_stars >= 3:
-                print("    |    Increasing the Monster combat strength!")
+                print("    |    Increasing the opponent combat strength!")
                 m_combat_strength += 1
         elif "Monster killed the" in last_game:
-            print("    |    Increasing the Monster combat strength!")
+            print("    |    Increasing the opponent combat strength!")
             combat_strength += 1
         else:
-            print("    |    last game had no effect on Hero/Monster combat strength!")
+            print("    |    last game had no effect on combat strength!")
