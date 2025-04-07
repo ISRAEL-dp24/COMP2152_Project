@@ -135,7 +135,7 @@ def monster_attacks(m_combat_strength, health_points):
         effective_strength = m_combat_strength
 
     if effective_strength >= health_points:
-        # Monster was strong enough to kill player in one blow
+        # Monster was strong enough to kill player in one blo
         health_points = 0
         print("    |    Player is dead")
     else:
