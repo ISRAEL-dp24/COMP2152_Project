@@ -153,6 +153,12 @@ if not input_invalid:
     # Use Loot
     belt, health_points = function.use_loot(belt, health_points)
 
+# Your random encounter feature
+    print(" ----------------------------------------------------------------------------------------")
+    health_points, combat_strength, belt = trigger_random_encounter(health_points, combat_strength, belt)
+    print(f" |    Updated stats - Health: {health_points}, Combat: {combat_strength}, Belt: {belt}")
+
+    # Original analysis roll
     print("    ------------------------------------------------------------------")
     print("    |", end="    ")
     input("Analyze the roll (Press enter)")
