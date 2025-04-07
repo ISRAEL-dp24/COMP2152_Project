@@ -1,9 +1,6 @@
 # Import the random library to use for the dice later
 import random
 
-# Will the line below print when you import function.py into main.py?
-# print("Inside function.py")
-
 
 # Lab 4: Question 4
 def use_loot(belt, health_points):
@@ -23,8 +20,32 @@ def use_loot(belt, health_points):
     return belt, health_points
 
 
-# Lab 4: Question 3 
-def collect_loot(loot_options, belt):
+# Lab 4: Question 3
+def collect_loot(monster_type, belt):
+    # Define Loot for Boss Monsters (with drop rates)
+    boss_loot = {
+        "Legendary Sword": 0.05,   # Very rare drop
+        "Dragon Armor": 0.10,      # Rare drop
+        "Flame Shield": 0.3,       # Special shield only for bosses
+        "Diamond": 0.15            # Very rare item
+    }
+
+    # Define Loot for Normal Monsters (with drop rates)
+    normal_loot = {
+        "Health Potion": 0.8,
+        "Poison Potion": 0.2,
+        "Secret Note": 0.1,
+        "Leather Boots": 0.25,
+        "Flimsy Gloves": 0.15
+    }
+
+    # Select the loot drop list based on monster type
+    if monster_type == "Boss":
+        loot_list = boss_loot
+    else:
+        loot_list = normal_loot
+
+    # ASCII art for collecting loot
     ascii_image3 = """
                       @@@ @@                
              *# ,        @              
@@ -41,16 +62,31 @@ def collect_loot(loot_options, belt):
               @@@@@@@@@@@@          
               """
     print(ascii_image3)
-    loot_roll = random.choice(range(1, len(loot_options) + 1))
-    loot = loot_options.pop(loot_roll - 1)
-    belt.append(loot)
+
+    # Randomly select loot based on drop rates
+    loot_collected = []
+    for item, drop_rate in loot_list.items():
+        # If the random value is less than or equal to the drop rate, the item is dropped
+        if random.random() <= drop_rate:
+            loot_collected.append(item)
+
+    # Add collected loot to the player's belt
+    belt.extend(loot_collected)
+
+    if loot_collected:
+        print(f"    |    Loot obtained from the {'boss' if monster_type == 'Boss' else 'monster'}: ",
+              ", ".join(loot_collected))
+    else:
+        print(f"    |    No loot obtained from the {'boss' if monster_type == 'Boss' else 'monster'}.")
+
     print("    |    Your belt: ", belt)
-    return loot_options, belt
+    return belt
 
 
 # Hero's Attack Function
-# Hero's Attack Function
-def hero_attacks(combat_strength, m_health_points):
+
+def hero_attacks(combat_strength, m_health_points, monster_type="Normal"):
+
     ascii_image = """
                                 @@   @@ 
                                 @    @  
@@ -63,6 +99,7 @@ def hero_attacks(combat_strength, m_health_points):
                @    @@@@                
           @@@ @@                        
        @@     @                         
+
    @@*       @                          
    @        @@                          
            @@                                                    
@@ -73,6 +110,7 @@ def hero_attacks(combat_strength, m_health_points):
   """
     print(ascii_image)
     print("    |    Player's weapon (" + str(combat_strength) + ") ---> Monster (" + str(m_health_points) + ")")
+
 
     # Critical Strike Logic
     import random
@@ -94,6 +132,7 @@ def hero_attacks(combat_strength, m_health_points):
     else:
         # Player only damaged the monster
         m_health_points -= effective_strength
+
         print("    |    You have reduced the monster's health to: " + str(m_health_points))
 
     return m_health_points
@@ -107,15 +146,15 @@ def monster_attacks(m_combat_strength, health_points):
       (     @*&@  ,                         
     @               %                       
      &#(@(@%@@@@@*   /                      
-      @@@@@.                                
+      @@@@@.                                 
                @       /                    
-                %         @                 
+                %         @                  
             ,(@(*/           %              
                @ (  .@#                 @   
                           @           .@@. @
                    @         ,              
                       @       @ .@          
-                             @              
+                             @               
                           *(*  *      
              """
     print(ascii_image2)
@@ -145,6 +184,7 @@ def monster_attacks(m_combat_strength, health_points):
 
     return health_points
 
+
 # Lab 5: Question 7
 # Recursion
 # You can choose to go crazy, but it will reduce your health points by 5
@@ -167,4 +207,3 @@ def inception_dream(num_dream_lvls):
         # 1 + 1 + 1 + 1 + inception_dream(1)
         # 1 + 1 + 1 + 1 + 2
         return 1 + int(inception_dream(num_dream_lvls - 1))
-

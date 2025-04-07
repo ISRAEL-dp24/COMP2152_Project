@@ -1,9 +1,6 @@
-# Import the random library to use for the dice later
-import random
-
-# Put all the functions into another file and import them
 
 import function
+import random
 
 print("    ------------------------------------------------------------------")
 print("    |    Loading previous game data...")
@@ -32,6 +29,23 @@ monster_powers = {
 # Define the number of stars to award the player
 num_stars = 0
 
+# Define Boss Monster (Separate attributes for Boss)
+boss_monster = {
+    "name": "The Dark Lord",
+    "combat_strength": 15,  # Stronger than regular monsters
+    "health_points": 30,  # More health
+}
+
+def encounter_loot():
+    loot = random.choice(loot_options)
+    print("    ------------------------------------------------------------------")
+    print(f"    |    You encounter loot! It's a {loot}!")
+    belt.append(loot)  # Add loot to the player's belt
+    print(f"    |    Your loot: {belt}")
+    if loot == "Health Potion":
+        print("    |    You can use this Health Potion before the fight with the monster!")
+        print("    |    Choose to drink it if you'd like.")
+
 # Loop to get valid input for Hero and Monster's Combat Strength
 i = 0
 input_invalid = True
@@ -45,16 +59,14 @@ while input_invalid and i in range(5):
 
     # Validate input: Check if the string inputted is numeric
     if (not combat_strength.isnumeric()) or (not m_combat_strength.isnumeric()):
-        # If one of the inputs are invalid, print error message and halt
         print("    |    One or more invalid inputs. Player needs to enter integer numbers for Combat Strength    |")
-        i = i + 1
+        i += 1
         continue
 
-    # Note: Now safe to cast combat_strength to integer
     # Validate input: Check if the string inputted
     elif (int(combat_strength) not in range(1, 7)) or (int(m_combat_strength)) not in range(1, 7):
         print("    |    Enter a valid integer between 1 and 6 only")
-        i = i + 1
+        i += 1
         continue
 
     else:
@@ -143,6 +155,12 @@ if not input_invalid:
     # Use Loot
     belt, health_points = function.use_loot(belt, health_points)
 
+# Your random encounter feature
+    print(" ----------------------------------------------------------------------------------------")
+    health_points, combat_strength, belt = trigger_random_encounter(health_points, combat_strength, belt)
+    print(f" |    Updated stats - Health: {health_points}, Combat: {combat_strength}, Belt: {belt}")
+
+    # Original analysis roll
     print("    ------------------------------------------------------------------")
     print("    |", end="    ")
     input("Analyze the roll (Press enter)")
@@ -159,24 +177,23 @@ if not input_invalid:
                 @%   @                      
          @     @                        
              &                          
-      @      .                          
-
+      @      .                           
      @       @                    @     
               @                  @      
       @         @              @  @     
        @            ,@@@@@@@     @      
          @                     @        
             @               @           
-                 @@@@@@@                
-
+                 @@@@@@@                 
                                       """
     print(ascii_image4)
-    power_roll = random.choice(["Fire Magic", "Freeze Time", "Super Hearing"])
+    power_roll = random.choice(list(monster_powers.keys()))
 
     # Increase the monster’s combat strength by its power
     m_combat_strength += min(6, m_combat_strength + monster_powers[power_roll])
-    print("    |    The monster's combat strength is now " + str(
-        m_combat_strength) + " using the " + power_roll + " magic power")
+
+    print("    |    The monster's combat strength is now " + str(m_combat_strength) + " using the " + power_roll + " magic power")
+
 
     # Lab 06 - Question 6
     num_dream_lvls = -1
@@ -198,11 +215,10 @@ if not input_invalid:
                 combat_strength += crazy_level
                 print("combat strength: " + str(combat_strength))
                 print("health points: " + str(health_points))
-        print("num_dream_lvls: ", num_dream_lvls)     
+        print("num_dream_lvls: ", num_dream_lvls)
 
 
-    # Fight Sequence
-    # Loop while the monster and the player are alive. Call fight sequence functions
+
     print("    ------------------------------------------------------------------")
     print("    |    You meet the monster. FIGHT!!")
     while m_health_points > 0 and health_points > 0:
@@ -218,6 +234,20 @@ if not input_invalid:
             m_health_points = function.hero_attacks(combat_strength, m_health_points)
             if m_health_points == 0:
                 num_stars = 3
+                # Loot drop after killing monster
+                print("    ------------------------------------------------------------------")
+                print("    |    The monster is defeated!")
+                print("    |    Loot dropped!")
+                belt = function.collect_loot("Normal", belt)
+                print("    |    Your loot: ", belt)
+                # Check if a health potion was dropped
+                if "Health Potion" in belt:
+                    print("    |    You drink a Health Potion before facing the boss!")
+                    belt.remove("Health Potion")
+                    health_points += 10  # Increase health by 10 (or desired value)
+                    print("    |    Your health is now: ", health_points)
+
+
             else:
                 print("    |", end="    ")
                 print("------------------------------------------------------------------")
@@ -240,8 +270,83 @@ if not input_invalid:
                 m_health_points = function.hero_attacks(combat_strength, m_health_points)
                 if m_health_points == 0:
                     num_stars = 3
+                    # Loot drop after killing monster
+                    print("    ------------------------------------------------------------------")
+                    print("    |    The monster is defeated!")
+                    print("    |    Loot dropped!")
+                    belt = function.collect_loot("Normal", belt)
+                    print("    |    Your loot: ", belt)
+                    # Check if a health potion was dropped
+                    if "Health Potion" in belt:
+                        print("    |    You drink a Health Potion before facing the boss!")
+                        belt.remove("Health Potion")
+                        health_points += 10  # Increase health by 10 (or desired value)
+                        print("    |    Your health is now: ", health_points)
+
                 else:
                     num_stars = 2
+
+
+    # Check if player survived the regular monster fight
+    if health_points > 0:
+        # After defeating the regular monster, introduce boss monster
+        print("    ------------------------------------------------------------------")
+        print("    |    You encounter a BOSS MONSTER: " + boss_monster["name"] + "!!")
+        print("    |    The boss monster has " + str(boss_monster["health_points"]) + " health points!")
+        boss_health_points = boss_monster["health_points"]
+        boss_combat_strength = boss_monster["combat_strength"]
+
+        # Boss Fight Sequence
+        while boss_health_points > 0 and health_points > 0:
+            # Boss Fight Sequence
+            print("    |", end="    ")
+
+            input("Boss fight begins! (Press enter)")
+            attack_roll = random.choice(small_dice_options)
+            if not (attack_roll % 2 == 0):
+                print("    |", end="    ")
+                input("You strike the boss (Press enter)")
+                boss_health_points = function.hero_attacks(combat_strength, boss_health_points)
+                if boss_health_points == 0:
+                    num_stars = 5  # High reward for defeating the boss
+                    print("    ------------------------------------------------------------------")
+                    print("    |    The Boss is defeated!")
+                    print("    |    Loot dropped!")
+                    belt = function.collect_loot("Boss", belt)  # Boss loot drop
+                    print("    |    Your loot: ", belt)
+                else:
+                    print("    |", end="    ")
+                    print("------------------------------------------------------------------")
+                    input("    |    The boss strikes back (Press enter)!!!")
+                    health_points = function.monster_attacks(boss_combat_strength, health_points)
+                    if health_points == 0:
+                        num_stars = 2  # Lower reward for dying to the boss
+                    else:
+                        num_stars = 3
+
+
+            else:
+                print("    |", end="    ")
+                input("The boss strikes first (Press enter)")
+                health_points = function.monster_attacks(boss_combat_strength, health_points)
+                if health_points == 0:
+                    num_stars = 1
+                else:
+                    print("    |", end="    ")
+                    print("------------------------------------------------------------------")
+                    input("You strike the boss! (Press enter)")
+                    boss_health_points = function.hero_attacks(combat_strength, boss_health_points)
+                    if boss_health_points == 0:
+                        num_stars = 5
+                        print("    ------------------------------------------------------------------")
+                        print("    |    The Boss is defeated!")
+                        print("    |    Loot dropped!")
+                        belt = function.collect_loot("Boss", belt)  # Boss loot drop
+                        print("    |    Your loot: ", belt)
+
+    else:
+        print("    |    You have died. The boss encounter is skipped.")
+
 
     # Final Score Display
     tries = 0
@@ -252,20 +357,17 @@ if not input_invalid:
         hero_name = input("Enter your Hero's name (in two words)")
         name = hero_name.split()
         if len(name) != 2:
-            print("    |    Please enter a name with two parts (separated by a space)")
+            print("    |    Hero's name should consist of two words")
             tries += 1
         else:
-            if not name[0].isalpha() or not name[1].isalpha():
-                print("    |    Please enter an alphabetical name")
-                tries += 1
-            else:
-                short_name = name[0][0:2:1] + name[1][0:1:1]
-                print("    |    I'm going to call you " + short_name + " for short")
-                input_invalid = False
+            input_invalid = False
 
     if not input_invalid:
-        stars_display = "*" * num_stars
-        print("    |    Hero " + short_name + " gets <" + stars_display + "> stars")
 
-        # Lab 06 - Question 3 and 4
-        function.save_game(winner, hero_name=short_name, num_stars=num_stars)
+        print("    ------------------------------------------------------------------")
+        print("    |    Game Over | Your final score: " + str(num_stars) + " stars")
+        print("    |    Final Score for " + name[0] + " " + name[1] + " |", end="    ")
+        function.save_game(hero_name, num_stars, combat_strength, health_points, belt, boss_monster["name"], tries)
+        print("    |    New Game Saved. You will be able to load the game next time.")
+    print("    ------------------------------------------------------------------")
+
