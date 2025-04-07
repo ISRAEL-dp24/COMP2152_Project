@@ -2,6 +2,7 @@
 import random
 
 # Put all the functions into another file and import them
+
 import function
 
 print("    ------------------------------------------------------------------")
@@ -88,8 +89,10 @@ if not input_invalid:
     combat_strength = min(6, (combat_strength + weapon_roll))
     print("    |    The hero\'s weapon is " + str(weapons[weapon_roll - 1]))
 
+
     # Lab 06 - Question 5b
     function.adjust_combat_strength(combat_strength, m_combat_strength)
+
     # Weapon Roll Analysis
     print("    ------------------------------------------------------------------")
     print("    |", end="    ")
@@ -174,6 +177,7 @@ if not input_invalid:
     m_combat_strength += min(6, m_combat_strength + monster_powers[power_roll])
     print("    |    The monster's combat strength is now " + str(
         m_combat_strength) + " using the " + power_roll + " magic power")
+
     # Lab 06 - Question 6
     num_dream_lvls = -1
     while (num_dream_lvls  < 0 or num_dream_lvls > 3):
@@ -195,6 +199,7 @@ if not input_invalid:
                 print("combat strength: " + str(combat_strength))
                 print("health points: " + str(health_points))
         print("num_dream_lvls: ", num_dream_lvls)     
+
 
     # Fight Sequence
     # Loop while the monster and the player are alive. Call fight sequence functions
@@ -237,10 +242,7 @@ if not input_invalid:
                     num_stars = 3
                 else:
                     num_stars = 2
-    if (m_health_points <= 0):
-        winner = "Hero"
-    else:
-        winner = "Monster"
+
     # Final Score Display
     tries = 0
     input_invalid = True
@@ -264,5 +266,6 @@ if not input_invalid:
     if not input_invalid:
         stars_display = "*" * num_stars
         print("    |    Hero " + short_name + " gets <" + stars_display + "> stars")
+
         # Lab 06 - Question 3 and 4
         function.save_game(winner, hero_name=short_name, num_stars=num_stars)
