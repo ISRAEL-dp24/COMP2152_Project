@@ -84,7 +84,9 @@ def collect_loot(monster_type, belt):
 
 
 # Hero's Attack Function
+
 def hero_attacks(combat_strength, m_health_points, monster_type="Normal"):
+
     ascii_image = """
                                 @@   @@ 
                                 @    @  
@@ -109,19 +111,34 @@ def hero_attacks(combat_strength, m_health_points, monster_type="Normal"):
     print(ascii_image)
     print("    |    Player's weapon (" + str(combat_strength) + ") ---> Monster (" + str(m_health_points) + ")")
 
-    if combat_strength >= m_health_points:
-        m_health_points = 0
-        if monster_type == "Boss":
-            print("    |    You have defeated the Boss Monster! What a victory!")
-        else:
-            print("    |    You have killed the monster")
+
+    # Critical Strike Logic
+    import random
+    health_threshold = 10  # Health threshold for critical strike chance
+    is_hero_weak = combat_strength < m_health_points / 2  # Hero is weak if strength is less than half monster's health
+    critical_chance = 0.5 if m_health_points > health_threshold else (1/6 if is_hero_weak else 0)
+    is_critical = random.random() < critical_chance
+
+    if is_critical:
+        print("    |    CRITICAL STRIKE! Doubling the damage!")
+        effective_strength = combat_strength * 2
     else:
-        m_health_points -= combat_strength
+        effective_strength = combat_strength
+
+    if effective_strength >= m_health_points:
+        # Player was strong enough to kill monster in one blow
+        m_health_points = 0
+        print("    |    You have killed the monster")
+    else:
+        # Player only damaged the monster
+        m_health_points -= effective_strength
+
         print("    |    You have reduced the monster's health to: " + str(m_health_points))
 
     return m_health_points
 
 
+# Monster's Attack Function
 # Monster's Attack Function
 def monster_attacks(m_combat_strength, health_points):
     ascii_image2 = """                                                                 
@@ -142,14 +159,29 @@ def monster_attacks(m_combat_strength, health_points):
              """
     print(ascii_image2)
     print("    |    Monster's Claw (" + str(m_combat_strength) + ") ---> Player (" + str(health_points) + ")")
-    if m_combat_strength >= health_points:
-        # Monster was strong enough to kill player in one blow
+
+    # Critical Strike Logic
+    import random
+    health_threshold = 10  # Health threshold for critical strike chance
+    is_monster_weak = m_combat_strength < health_points / 2  # Monster is weak if strength is less than half player's health
+    critical_chance = 0.5 if health_points > health_threshold else (1/6 if is_monster_weak else 0)
+    is_critical = random.random() < critical_chance
+
+    if is_critical:
+        print("    |    CRITICAL STRIKE! Doubling the damage!")
+        effective_strength = m_combat_strength * 2
+    else:
+        effective_strength = m_combat_strength
+
+    if effective_strength >= health_points:
+        # Monster was strong enough to kill player in one blo
         health_points = 0
         print("    |    Player is dead")
     else:
         # Monster only damaged the player
-        health_points -= m_combat_strength
+        health_points -= effective_strength
         print("    |    The monster has reduced Player's health to: " + str(health_points))
+
     return health_points
 
 
@@ -211,3 +243,5 @@ def adjust_combat_strength(combat_strength, m_combat_strength):
             combat_strength += 1
         else:
             print("    |    last game had no effect on Hero/Monster combat strength!")
+        return 1 + int(inception_dream(num_dream_lvls - 1))
+
