@@ -1,6 +1,8 @@
 import function
 import random
 
+from encounters import trigger_random_encounter
+
 print("    ------------------------------------------------------------------")
 print("    |    Loading previous game data...")
 # Lab 06 - Question 5
